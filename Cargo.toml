@@ -1,8 +1,3 @@
-[package]
-name = "smithy-wasm"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-serde = {version= "1.0.219", features = ["derive"]}
-serde_json = {version = "1.0.140" }
+[workspace]
+resolver = "3"
+members = ["generator/", "test/s3/"]

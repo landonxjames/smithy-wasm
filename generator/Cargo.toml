@@ -1,0 +1,10 @@
+[package]
+name = "smithy-wasm"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+convert_case = "0.8.0"
+serde = {version= "1.0.219", features = ["derive"]}
+serde_json = {version = "1.0.140" }
+regex = "1.11.1"

@@ -1,0 +1,2693 @@
+package component:s3;
+
+interface amazon-s3 {
+// Shapes
+type prefix = string; 
+record s3tables-destination-result {
+	table-namespace: s3tables-namespace,
+	table-name: s3tables-name,
+	table-bucket-arn: s3tables-bucket-arn,
+	table-arn: s3tables-arn,
+}
+record analytics-export-destination {
+	s3bucket-destination: analytics-s3bucket-destination,
+}
+enum bucket-location-constraint {
+	us-gov-west-1,
+	ap-northeast-1,
+	af-south-1,
+	eu-south-1,
+	us-east-2,
+	ca-central-1,
+	sa-east-1,
+	ap-south-1,
+	us-gov-east-1,
+	ap-south-2,
+	ap-southeast-2,
+	ap-southeast-1,
+	cn-northwest-1,
+	ap-east-1,
+	ap-southeast-3,
+	eu-north-1,
+	ap-northeast-2,
+	eu-south-2,
+	eu-west-1,
+	eu-west-3,
+	me-south-1,
+	us-west-2,
+	cn-north-1,
+	eu-west-2,
+	eu-central-1,
+	us-west-1,
+	eu,
+	ap-northeast-3,
+}
+record get-bucket-notification-configuration-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+}
+record storage-class-analysis-data-export {
+	output-schema-version: storage-class-analysis-schema-version,
+	destination: analytics-export-destination,
+}
+record get-bucket-website-output {
+	index-document: index-document,
+	routing-rules: routing-rules,
+	redirect-all-requests-to: redirect-all-requests-to,
+	error-document: error-document,
+}
+record get-bucket-analytics-configuration-request {
+	bucket: bucket-name,
+	id: analytics-id,
+	expected-bucket-owner: account-id,
+}
+type ssekms-encryption-context = string; 
+record index-document {
+	suffix: suffix,
+}
+type size = s64; 
+type response-content-disposition = string; 
+record csv-output {
+	record-delimiter: record-delimiter,
+	field-delimiter: field-delimiter,
+	quote-character: quote-character,
+	quote-fields: quote-fields,
+	quote-escape-character: quote-escape-character,
+}
+record s3tables-destination {
+	table-name: s3tables-name,
+	table-bucket-arn: s3tables-bucket-arn,
+}
+record list-objects-request {
+	delimiter: delimiter,
+	encoding-type: encoding-type,
+	marker: marker,
+	bucket: bucket-name,
+	prefix: prefix,
+	request-payer: request-payer,
+	expected-bucket-owner: account-id,
+	max-keys: max-keys,
+	optional-object-attributes: optional-object-attributes-list,
+}
+record put-bucket-policy-request {
+	bucket: bucket-name,
+	policy: policy,
+	content-md5: content-md5,
+	checksum-algorithm: checksum-algorithm,
+	confirm-remove-self-bucket-access: confirm-remove-self-bucket-access,
+	expected-bucket-owner: account-id,
+}
+record server-side-encryption-rule {
+	bucket-key-enabled: bucket-key-enabled,
+	apply-server-side-encryption-by-default: server-side-encryption-by-default,
+}
+record input-serialization {
+	json: json-input,
+	compression-type: compression-type,
+	csv: csv-input,
+	parquet: parquet-input,
+}
+record csv-input {
+	record-delimiter: record-delimiter,
+	file-header-info: file-header-info,
+	field-delimiter: field-delimiter,
+	quote-character: quote-character,
+	quote-escape-character: quote-escape-character,
+	comments: comments,
+	allow-quoted-record-delimiter: allow-quoted-record-delimiter,
+}
+type next-part-number-marker = string; 
+type object-version-id = string; 
+record encryption-configuration {
+	replica-kms-key-id: replica-kms-key-id,
+}
+record cors-configuration {
+	cors-rules: cors-rules,
+}
+type max-buckets = s32; 
+record object {
+	checksum-algorithm: checksum-algorithm-list,
+	key: object-key,
+	last-modified: last-modified,
+	storage-class: object-storage-class,
+	owner: owner,
+	checksum-type: checksum-type,
+	size: size,
+	e-tag: e-tag,
+	restore-status: restore-status,
+}
+type filter-rule-list = list<filter-rule>; 
+type intelligent-tiering-days = s32; 
+type days = s32; 
+record copy-object-output {
+	version-id: object-version-id,
+	server-side-encryption: server-side-encryption,
+	ssekms-key-id: ssekms-key-id,
+	copy-source-version-id: copy-source-version-id,
+	sse-customer-key-md5: sse-customer-key-md5,
+	expiration: expiration,
+	sse-customer-algorithm: sse-customer-algorithm,
+	bucket-key-enabled: bucket-key-enabled,
+	copy-object-result: copy-object-result,
+	ssekms-encryption-context: ssekms-encryption-context,
+	request-charged: request-charged,
+}
+type allowed-origin = string; 
+type noncurrent-version-transition-list = list<noncurrent-version-transition>; 
+type topic-arn = string; 
+record get-bucket-acl-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+type delete-marker = bool; 
+type notification-id = string; 
+record redirect-all-requests-to {
+	protocol: protocol,
+	host-name: host-name,
+}
+enum expiration-status {
+	disabled,
+	enabled,
+}
+type checksum-sha1 = string; 
+record create-multipart-upload-output {
+	key: object-key,
+	sse-customer-key-md5: sse-customer-key-md5,
+	ssekms-key-id: ssekms-key-id,
+	sse-customer-algorithm: sse-customer-algorithm,
+	ssekms-encryption-context: ssekms-encryption-context,
+	bucket-key-enabled: bucket-key-enabled,
+	upload-id: multipart-upload-id,
+	bucket: bucket-name,
+	request-charged: request-charged,
+	checksum-algorithm: checksum-algorithm,
+	abort-date: abort-date,
+	server-side-encryption: server-side-encryption,
+	checksum-type: checksum-type,
+	abort-rule-id: abort-rule-id,
+}
+record public-access-block-configuration {
+	block-public-policy: setting,
+	restrict-public-buckets: setting,
+	ignore-public-acls: setting,
+	block-public-acls: setting,
+}
+type if-match = string; 
+type setting = bool; 
+record delete-objects-output {
+	deleted: deleted-objects,
+	request-charged: request-charged,
+	errors: errors,
+}
+type accept-ranges = string; 
+record get-bucket-policy-output {
+	policy: policy,
+}
+record get-bucket-tagging-output {
+	tag-set: tag-set,
+}
+enum location-type {
+	availabilityzone,
+	localzone,
+}
+record put-bucket-website-request {
+	expected-bucket-owner: account-id,
+	website-configuration: website-configuration,
+	checksum-algorithm: checksum-algorithm,
+	bucket: bucket-name,
+	content-md5: content-md5,
+}
+record get-bucket-tagging-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+}
+record sse-kms-encrypted-objects {
+	status: sse-kms-encrypted-objects-status,
+}
+type lambda-function-arn = string; 
+type access-point-arn = string; 
+record list-bucket-inventory-configurations-request {
+	continuation-token: token,
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+record end-event {
+}
+record get-bucket-versioning-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+type grant-read = string; 
+record select-object-content-output {
+	payload: select-object-content-event-stream,
+}
+type key-marker = string; 
+record get-bucket-analytics-configuration-output {
+	analytics-configuration: analytics-configuration,
+}
+record glacier-job-parameters {
+	tier: tier,
+}
+enum storage-class {
+	standard,
+	snow,
+	deep-archive,
+	reduced-redundancy,
+	glacier,
+	express-onezone,
+	outposts,
+	glacier-ir,
+	onezone-ia,
+	intelligent-tiering,
+	standard-ia,
+}
+record encryption {
+	encryption-type: server-side-encryption,
+	kms-key-id: ssekms-key-id,
+	kms-context: kms-context,
+}
+record create-session-output {
+	ssekms-encryption-context: ssekms-encryption-context,
+	bucket-key-enabled: bucket-key-enabled,
+	credentials: session-credentials,
+	server-side-encryption: server-side-encryption,
+	ssekms-key-id: ssekms-key-id,
+}
+record get-public-access-block-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+}
+enum inventory-optional-field {
+	objectlockmode,
+	objectowner,
+	lastmodifieddate,
+	encryptionstatus,
+	bucketkeystatus,
+	checksumalgorithm,
+	storageclass,
+	etag,
+	replicationstatus,
+	objectlockretainuntildate,
+	intelligenttieringaccesstier,
+	objectaccesscontrollist,
+	objectlocklegalholdstatus,
+	size,
+	ismultipartuploaded,
+}
+record create-session-request {
+	bucket-key-enabled: bucket-key-enabled,
+	session-mode: session-mode,
+	ssekms-encryption-context: ssekms-encryption-context,
+	bucket: bucket-name,
+	ssekms-key-id: ssekms-key-id,
+	server-side-encryption: server-side-encryption,
+}
+record inventory-schedule {
+	frequency: inventory-frequency,
+}
+type completed-part-list = list<completed-part>; 
+enum quote-fields {
+	asneeded,
+	always,
+}
+record get-bucket-policy-status-output {
+	policy-status: policy-status,
+}
+enum intelligent-tiering-access-tier {
+	archive-access,
+	deep-archive-access,
+}
+enum payer {
+	bucketowner,
+	requester,
+}
+type object-version-list = list<object-version>; 
+record list-multipart-uploads-output {
+	key-marker: key-marker,
+	prefix: prefix,
+	uploads: multipart-upload-list,
+	encoding-type: encoding-type,
+	request-charged: request-charged,
+	max-uploads: max-uploads,
+	common-prefixes: common-prefix-list,
+	delimiter: delimiter,
+	upload-id-marker: upload-id-marker,
+	next-upload-id-marker: next-upload-id-marker,
+	bucket: bucket-name,
+	next-key-marker: next-key-marker,
+	is-truncated: is-truncated,
+}
+record tiering {
+	days: intelligent-tiering-days,
+	access-tier: intelligent-tiering-access-tier,
+}
+enum object-attributes {
+	checksum,
+	etag,
+	object-parts,
+	storage-class,
+	object-size,
+}
+record get-bucket-cors-output {
+	cors-rules: cors-rules,
+}
+type priority = s32; 
+type target-prefix = string; 
+type if-match-size = s64; 
+record put-bucket-notification-configuration-request {
+	skip-destination-validation: skip-validation,
+	bucket: bucket-name,
+	notification-configuration: notification-configuration,
+	expected-bucket-owner: account-id,
+}
+type abort-rule-id = string; 
+record target-object-key-format {
+	simple-prefix: simple-prefix,
+	partitioned-prefix: partitioned-prefix,
+}
+enum event {
+	s3-objectcreated-completemultipartupload,
+	s3-objectrestore,
+	s3-objectremoved-delete,
+	s3-replication-operationmissedthreshold,
+	s3-lifecycletransition,
+	s3-intelligenttiering,
+	s3-replication-operationreplicatedafterthreshold,
+	s3-lifecycleexpiration-delete,
+	s3-lifecycleexpiration-deletemarkercreated,
+	s3-objectrestore-post,
+	s3-objectcreated-post,
+	s3-objectacl-put,
+	s3-objecttagging,
+	s3-replication-operationnottracked,
+	s3-replication,
+	s3-objectrestore-completed,
+	s3-objectcreated-put,
+	s3-objecttagging-put,
+	s3-objecttagging-delete,
+	s3-replication-operationfailedreplication,
+	s3-objectremoved,
+	s3-objectremoved-deletemarkercreated,
+	s3-lifecycleexpiration,
+	s3-objectrestore-delete,
+	s3-objectcreated,
+	s3-reducedredundancylostobject,
+	s3-objectcreated-copy,
+}
+record get-bucket-lifecycle-configuration-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+}
+type common-prefix-list = list<common-prefix>; 
+type bucket-key-enabled = bool; 
+enum protocol {
+	http,
+	https,
+}
+type expiration = string; 
+type quote-character = string; 
+type next-upload-id-marker = string; 
+record session-credentials {
+	expiration: session-expiration,
+	access-key-id: access-key-id-value,
+	session-token: session-credential-value,
+	secret-access-key: session-credential-value,
+}
+type end = s64; 
+record lambda-function-configuration {
+	id: notification-id,
+	filter: notification-configuration-filter,
+	lambda-function-arn: lambda-function-arn,
+	events: event-list,
+}
+record delete-bucket-encryption-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+enum object-version-storage-class {
+	standard,
+}
+record delete-bucket-metrics-configuration-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+	id: metrics-id,
+}
+type s3tables-name = string; 
+record put-object-legal-hold-request {
+	checksum-algorithm: checksum-algorithm,
+	bucket: bucket-name,
+	content-md5: content-md5,
+	version-id: object-version-id,
+	legal-hold: object-lock-legal-hold,
+	expected-bucket-owner: account-id,
+	request-payer: request-payer,
+	key: object-key,
+}
+type max-age-seconds = s32; 
+record location-info {
+	%type: location-type,
+	name: location-name-as-string,
+}
+record error {
+	version-id: object-version-id,
+	code: code,
+	message: message,
+	key: object-key,
+}
+record list-directory-buckets-output {
+	buckets: buckets,
+	continuation-token: directory-bucket-token,
+}
+type next-version-id-marker = string; 
+record get-object-legal-hold-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+	version-id: object-version-id,
+	key: object-key,
+	request-payer: request-payer,
+}
+record get-bucket-ownership-controls-output {
+	ownership-controls: ownership-controls,
+}
+record get-bucket-metrics-configuration-request {
+	id: metrics-id,
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+record head-object-output {
+	metadata: metadata,
+	expiration: expiration,
+	server-side-encryption: server-side-encryption,
+	checksum-type: checksum-type,
+	checksum-sha256: checksum-sha256,
+	object-lock-legal-hold-status: object-lock-legal-hold-status,
+	checksum-crc32c: checksum-crc32c,
+	sse-customer-algorithm: sse-customer-algorithm,
+	parts-count: parts-count,
+	e-tag: e-tag,
+	archive-status: archive-status,
+	checksum-crc64nvme: checksum-crc64nvme,
+	accept-ranges: accept-ranges,
+	checksum-sha1: checksum-sha1,
+	bucket-key-enabled: bucket-key-enabled,
+	sse-customer-key-md5: sse-customer-key-md5,
+	delete-marker: delete-marker,
+	missing-meta: missing-meta,
+	content-disposition: content-disposition,
+	content-language: content-language,
+	restore: restore,
+	content-encoding: content-encoding,
+	object-lock-mode: object-lock-mode,
+	content-type: content-type,
+	replication-status: replication-status,
+	ssekms-key-id: ssekms-key-id,
+	website-redirect-location: website-redirect-location,
+	checksum-crc32: checksum-crc32,
+	storage-class: storage-class,
+	version-id: object-version-id,
+	expires: expires,
+	request-charged: request-charged,
+	object-lock-retain-until-date: object-lock-retain-until-date,
+	content-length: content-length,
+	last-modified: last-modified,
+	cache-control: cache-control,
+}
+type restore-expiry-date = string; 
+record put-object-acl-request {
+	access-control-policy: access-control-policy,
+	checksum-algorithm: checksum-algorithm,
+	grant-full-control: grant-full-control,
+	acl: object-canned-acl,
+	grant-read-acp: grant-read-acp,
+	key: object-key,
+	request-payer: request-payer,
+	grant-write: grant-write,
+	bucket: bucket-name,
+	version-id: object-version-id,
+	content-md5: content-md5,
+	expected-bucket-owner: account-id,
+	grant-write-acp: grant-write-acp,
+	grant-read: grant-read,
+}
+type allow-quoted-record-delimiter = bool; 
+type request-token = string; 
+record put-bucket-tagging-request {
+	bucket: bucket-name,
+	content-md5: content-md5,
+	expected-bucket-owner: account-id,
+	checksum-algorithm: checksum-algorithm,
+	tagging: tagging,
+}
+record put-bucket-inventory-configuration-request {
+	bucket: bucket-name,
+	inventory-configuration: inventory-configuration,
+	id: inventory-id,
+	expected-bucket-owner: account-id,
+}
+record request-payment-configuration {
+	payer: payer,
+}
+type topic-configuration-list = list<topic-configuration>; 
+record object-lock-retention {
+	mode: object-lock-retention-mode,
+	retain-until-date: date,
+}
+record replication-rule-filter {
+	prefix: prefix,
+	tag: tag,
+	and: replication-rule-and-operator,
+}
+enum transition-storage-class {
+	onezone-ia,
+	standard-ia,
+	intelligent-tiering,
+	glacier,
+	deep-archive,
+	glacier-ir,
+}
+type checksum-sha256 = string; 
+type expires = string; 
+record s3location {
+	prefix: location-prefix,
+	access-control-list: grants,
+	tagging: tagging,
+	bucket-name: bucket-name,
+	canned-acl: object-canned-acl,
+	encryption: encryption,
+	user-metadata: user-metadata,
+	storage-class: storage-class,
+}
+type location = string; 
+enum optional-object-attributes {
+	restore-status,
+}
+type allowed-headers = list<allowed-header>; 
+type inventory-configuration-list = list<inventory-configuration>; 
+record list-bucket-intelligent-tiering-configurations-output {
+	is-truncated: is-truncated,
+	intelligent-tiering-configuration-list: intelligent-tiering-configuration-list,
+	next-continuation-token: next-token,
+	continuation-token: token,
+}
+type multipart-upload-id = string; 
+record completed-multipart-upload {
+	parts: completed-part-list,
+}
+type object-size = s64; 
+type if-modified-since = string; 
+type metadata-key = string; 
+record get-object-request {
+	request-payer: request-payer,
+	expected-bucket-owner: account-id,
+	checksum-mode: checksum-mode,
+	sse-customer-algorithm: sse-customer-algorithm,
+	if-unmodified-since: if-unmodified-since,
+	response-content-language: response-content-language,
+	version-id: object-version-id,
+	key: object-key,
+	response-content-disposition: response-content-disposition,
+	if-modified-since: if-modified-since,
+	if-match: if-match,
+	if-none-match: if-none-match,
+	bucket: bucket-name,
+	response-expires: response-expires,
+	sse-customer-key-md5: sse-customer-key-md5,
+	response-cache-control: response-cache-control,
+	part-number: part-number,
+	response-content-type: response-content-type,
+	sse-customer-key: sse-customer-key,
+	range: range,
+	response-content-encoding: response-content-encoding,
+}
+record inventory-encryption {
+	ssekms: ssekms,
+	sses3: sses3,
+}
+record lifecycle-rule-and-operator {
+	tags: tag-set,
+	object-size-greater-than: object-size-greater-than-bytes,
+	object-size-less-than: object-size-less-than-bytes,
+	prefix: prefix,
+}
+type tag-count = s32; 
+type grant-read-acp = string; 
+record create-bucket-output {
+	location: location,
+}
+type transition-list = list<transition>; 
+type key-prefix-equals = string; 
+type directory-bucket-token = string; 
+record head-bucket-output {
+	bucket-region: region,
+	bucket-location-name: bucket-location-name,
+	access-point-alias: access-point-alias,
+	bucket-location-type: location-type,
+}
+type session-credential-value = string; 
+enum bucket-canned-acl {
+	public-read,
+	public-read-write,
+	authenticated-read,
+	private,
+}
+record transition {
+	date: date,
+	days: days,
+	storage-class: transition-storage-class,
+}
+record stats {
+	bytes-scanned: bytes-scanned,
+	bytes-processed: bytes-processed,
+	bytes-returned: bytes-returned,
+}
+enum restore-request-type {
+	select,
+}
+type region = string; 
+record intelligent-tiering-filter {
+	tag: tag,
+	prefix: prefix,
+	and: intelligent-tiering-and-operator,
+}
+type body = list<u8>; 
+type multipart-upload-list = list<multipart-upload>; 
+type object-lock-retain-until-date = string; 
+enum bucket-accelerate-status {
+	enabled,
+	suspended,
+}
+type inventory-optional-fields = list<inventory-optional-field>; 
+record abort-multipart-upload-request {
+	expected-bucket-owner: account-id,
+	request-payer: request-payer,
+	bucket: bucket-name,
+	key: object-key,
+	upload-id: multipart-upload-id,
+	if-match-initiated-time: if-match-initiated-time,
+}
+enum archive-status {
+	deep-archive-access,
+	archive-access,
+}
+type object-list = list<object>; 
+type account-id = string; 
+enum replication-time-status {
+	disabled,
+	enabled,
+}
+record continuation-event {
+}
+record put-object-legal-hold-output {
+	request-charged: request-charged,
+}
+record website-configuration {
+	error-document: error-document,
+	routing-rules: routing-rules,
+	index-document: index-document,
+	redirect-all-requests-to: redirect-all-requests-to,
+}
+record get-object-retention-output {
+	retention: object-lock-retention,
+}
+record create-bucket-configuration {
+	location-constraint: bucket-location-constraint,
+	location: location-info,
+	bucket: bucket-info,
+}
+record existing-object-replication {
+	status: existing-object-replication-status,
+}
+record json-input {
+	%type: json-type,
+}
+type policy = string; 
+enum owner-override {
+	destination,
+}
+enum mfa-delete-status {
+	enabled,
+	disabled,
+}
+record select-object-content-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+	input-serialization: input-serialization,
+	scan-range: scan-range,
+	expression-type: expression-type,
+	request-progress: request-progress,
+	expression: expression,
+	output-serialization: output-serialization,
+	sse-customer-algorithm: sse-customer-algorithm,
+	key: object-key,
+	sse-customer-key: sse-customer-key,
+	sse-customer-key-md5: sse-customer-key-md5,
+}
+record list-objects-v2request {
+	bucket: bucket-name,
+	encoding-type: encoding-type,
+	prefix: prefix,
+	fetch-owner: fetch-owner,
+	start-after: start-after,
+	optional-object-attributes: optional-object-attributes-list,
+	max-keys: max-keys,
+	request-payer: request-payer,
+	continuation-token: token,
+	expected-bucket-owner: account-id,
+	delimiter: delimiter,
+}
+type allowed-method = string; 
+type host-name = string; 
+type role = string; 
+record filter-rule {
+	value: filter-rule-value,
+	name: filter-rule-name,
+}
+record delete-bucket-website-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+}
+record put-object-lock-configuration-output {
+	request-charged: request-charged,
+}
+type description = string; 
+record write-get-object-response-request {
+	version-id: object-version-id,
+	error-code: error-code,
+	request-charged: request-charged,
+	content-length: content-length,
+	tag-count: tag-count,
+	object-lock-retain-until-date: object-lock-retain-until-date,
+	object-lock-legal-hold-status: object-lock-legal-hold-status,
+	server-side-encryption: server-side-encryption,
+	cache-control: cache-control,
+	content-disposition: content-disposition,
+	checksum-crc32: checksum-crc32,
+	storage-class: storage-class,
+	expiration: expiration,
+	checksum-crc64nvme: checksum-crc64nvme,
+	replication-status: replication-status,
+	checksum-crc32c: checksum-crc32c,
+	error-message: error-message,
+	body: streaming-blob,
+	content-language: content-language,
+	content-encoding: content-encoding,
+	object-lock-mode: object-lock-mode,
+	content-range: content-range,
+	sse-customer-key-md5: sse-customer-key-md5,
+	status-code: get-object-response-status-code,
+	request-route: request-route,
+	missing-meta: missing-meta,
+	content-type: content-type,
+	restore: restore,
+	request-token: request-token,
+	metadata: metadata,
+	e-tag: e-tag,
+	last-modified: last-modified,
+	checksum-sha1: checksum-sha1,
+	delete-marker: delete-marker,
+	accept-ranges: accept-ranges,
+	checksum-sha256: checksum-sha256,
+	sse-customer-algorithm: sse-customer-algorithm,
+	ssekms-key-id: ssekms-key-id,
+	bucket-key-enabled: bucket-key-enabled,
+	parts-count: parts-count,
+	expires: expires,
+}
+record put-public-access-block-request {
+	content-md5: content-md5,
+	checksum-algorithm: checksum-algorithm,
+	bucket: bucket-name,
+	public-access-block-configuration: public-access-block-configuration,
+	expected-bucket-owner: account-id,
+}
+type is-public = bool; 
+type tiering-list = list<tiering>; 
+type part-number-marker = string; 
+type next-token = string; 
+enum replication-rule-status {
+	enabled,
+	disabled,
+}
+type delete-markers = list<delete-marker-entry>; 
+type content-range = string; 
+record delete-bucket-inventory-configuration-request {
+	id: inventory-id,
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+record list-parts-output {
+	owner: owner,
+	checksum-type: checksum-type,
+	initiator: initiator,
+	storage-class: storage-class,
+	next-part-number-marker: next-part-number-marker,
+	request-charged: request-charged,
+	bucket: bucket-name,
+	abort-rule-id: abort-rule-id,
+	key: object-key,
+	upload-id: multipart-upload-id,
+	max-parts: max-parts,
+	parts: parts,
+	part-number-marker: part-number-marker,
+	abort-date: abort-date,
+	checksum-algorithm: checksum-algorithm,
+	is-truncated: is-truncated,
+}
+type copy-source-range = string; 
+enum object-lock-enabled {
+	enabled,
+}
+record initiator {
+	display-name: display-name,
+	id: id,
+}
+record get-bucket-logging-output {
+	logging-enabled: logging-enabled,
+}
+type copy-source-if-modified-since = string; 
+type allowed-header = string; 
+type event-list = list<event>; 
+type cache-control = string; 
+record checksum {
+	checksum-type: checksum-type,
+	checksum-crc32c: checksum-crc32c,
+	checksum-crc64nvme: checksum-crc64nvme,
+	checksum-crc32: checksum-crc32,
+	checksum-sha1: checksum-sha1,
+	checksum-sha256: checksum-sha256,
+}
+type e-tag = string; 
+record object-lock-rule {
+	default-retention: default-retention,
+}
+record get-bucket-inventory-configuration-request {
+	expected-bucket-owner: account-id,
+	id: inventory-id,
+	bucket: bucket-name,
+}
+record delete-bucket-lifecycle-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+enum replica-modifications-status {
+	enabled,
+	disabled,
+}
+record object-lock-configuration {
+	rule: object-lock-rule,
+	object-lock-enabled: object-lock-enabled,
+}
+enum partition-date-source {
+	deliverytime,
+	eventtime,
+}
+record source-selection-criteria {
+	replica-modifications: replica-modifications,
+	sse-kms-encrypted-objects: sse-kms-encrypted-objects,
+}
+type initiated = string; 
+type content-type = string; 
+variant metrics-filter {
+	and(metrics-and-operator),
+	tag(tag),
+	prefix(prefix),
+	access-point-arn(access-point-arn),
+}
+type record-delimiter = string; 
+type replication-rules = list<replication-rule>; 
+record delete-object-tagging-request {
+	version-id: object-version-id,
+	key: object-key,
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+record head-bucket-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+}
+record storage-class-analysis {
+	data-export: storage-class-analysis-data-export,
+}
+record delete-public-access-block-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+type http-error-code-returned-equals = string; 
+record get-bucket-lifecycle-configuration-output {
+	transition-default-minimum-object-size: transition-default-minimum-object-size,
+	rules: lifecycle-rules,
+}
+type session-expiration = string; 
+record get-bucket-versioning-output {
+	status: bucket-versioning-status,
+	mfa-delete: mfa-delete-status,
+}
+record s3key-filter {
+	filter-rules: filter-rule-list,
+}
+record replication-time {
+	status: replication-time-status,
+	time: replication-time-value,
+}
+type comments = string; 
+type queue-arn = string; 
+record deleted-object {
+	key: object-key,
+	delete-marker: delete-marker,
+	version-id: object-version-id,
+	delete-marker-version-id: delete-marker-version-id,
+}
+type is-restore-in-progress = bool; 
+record ownership-controls-rule {
+	object-ownership: object-ownership,
+}
+type replace-key-prefix-with = string; 
+record restore-object-request {
+	bucket: bucket-name,
+	version-id: object-version-id,
+	key: object-key,
+	restore-request: restore-request,
+	checksum-algorithm: checksum-algorithm,
+	expected-bucket-owner: account-id,
+	request-payer: request-payer,
+}
+record object-part {
+	checksum-crc32: checksum-crc32,
+	checksum-crc64nvme: checksum-crc64nvme,
+	part-number: part-number,
+	size: size,
+	checksum-sha256: checksum-sha256,
+	checksum-sha1: checksum-sha1,
+	checksum-crc32c: checksum-crc32c,
+}
+enum tagging-directive {
+	replace,
+	copy,
+}
+record replication-rule {
+	priority: priority,
+	filter: replication-rule-filter,
+	delete-marker-replication: delete-marker-replication,
+	id: id,
+	prefix: prefix,
+	existing-object-replication: existing-object-replication,
+	destination: destination,
+	source-selection-criteria: source-selection-criteria,
+	status: replication-rule-status,
+}
+record get-object-tagging-output {
+	version-id: object-version-id,
+	tag-set: tag-set,
+}
+record put-bucket-request-payment-request {
+	expected-bucket-owner: account-id,
+	content-md5: content-md5,
+	bucket: bucket-name,
+	checksum-algorithm: checksum-algorithm,
+	request-payment-configuration: request-payment-configuration,
+}
+record restore-object-output {
+	restore-output-path: restore-output-path,
+	request-charged: request-charged,
+}
+record common-prefix {
+	prefix: prefix,
+}
+record list-bucket-analytics-configurations-output {
+	is-truncated: is-truncated,
+	analytics-configuration-list: analytics-configuration-list,
+	next-continuation-token: next-token,
+	continuation-token: token,
+}
+enum sse-kms-encrypted-objects-status {
+	disabled,
+	enabled,
+}
+enum data-redundancy {
+	singlelocalzone,
+	singleavailabilityzone,
+}
+record delete-object-output {
+	delete-marker: delete-marker,
+	version-id: object-version-id,
+	request-charged: request-charged,
+}
+type allowed-methods = list<allowed-method>; 
+type metadata-table-status = string; 
+variant select-object-content-event-stream {
+	records(records-event),
+	stats(stats-event),
+	progress(progress-event),
+	cont(continuation-event),
+	end(end-event),
+}
+record intelligent-tiering-and-operator {
+	prefix: prefix,
+	tags: tag-set,
+}
+record get-object-legal-hold-output {
+	legal-hold: object-lock-legal-hold,
+}
+type intelligent-tiering-id = string; 
+type max-directory-buckets = s32; 
+type email-address = string; 
+type is-latest = bool; 
+record get-bucket-metrics-configuration-output {
+	metrics-configuration: metrics-configuration,
+}
+enum encoding-type {
+	url,
+}
+type error-message = string; 
+type metadata-value = string; 
+type location-prefix = string; 
+type field-delimiter = string; 
+record delete-marker-replication {
+	status: delete-marker-replication-status,
+}
+record get-bucket-encryption-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+}
+record lifecycle-rule {
+	expiration: lifecycle-expiration,
+	transitions: transition-list,
+	id: id,
+	noncurrent-version-transitions: noncurrent-version-transition-list,
+	noncurrent-version-expiration: noncurrent-version-expiration,
+	filter: lifecycle-rule-filter,
+	abort-incomplete-multipart-upload: abort-incomplete-multipart-upload,
+	status: expiration-status,
+	prefix: prefix,
+}
+record event-bridge-configuration {
+}
+enum replication-status {
+	failed,
+	complete,
+	replica,
+	pending,
+	completed,
+}
+record output-location {
+	s3: s3location,
+}
+type response-cache-control = string; 
+record target-grant {
+	permission: bucket-logs-permission,
+	grantee: grantee,
+}
+type tag-set = list<tag>; 
+record get-bucket-replication-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+type object-identifier-list = list<object-identifier>; 
+record access-control-policy {
+	owner: owner,
+	grants: grants,
+}
+type restore-output-path = string; 
+record list-bucket-metrics-configurations-output {
+	continuation-token: token,
+	metrics-configuration-list: metrics-configuration-list,
+	next-continuation-token: next-token,
+	is-truncated: is-truncated,
+}
+type object-size-less-than-bytes = s64; 
+type parts-list = list<object-part>; 
+record put-bucket-intelligent-tiering-configuration-request {
+	intelligent-tiering-configuration: intelligent-tiering-configuration,
+	bucket: bucket-name,
+	id: intelligent-tiering-id,
+}
+record get-bucket-website-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+type streaming-blob = list<u8>; 
+record get-object-output {
+	request-charged: request-charged,
+	accept-ranges: accept-ranges,
+	ssekms-key-id: ssekms-key-id,
+	checksum-crc32: checksum-crc32,
+	storage-class: storage-class,
+	checksum-sha1: checksum-sha1,
+	restore: restore,
+	expiration: expiration,
+	server-side-encryption: server-side-encryption,
+	sse-customer-key-md5: sse-customer-key-md5,
+	bucket-key-enabled: bucket-key-enabled,
+	last-modified: last-modified,
+	e-tag: e-tag,
+	parts-count: parts-count,
+	tag-count: tag-count,
+	expires: expires,
+	content-language: content-language,
+	delete-marker: delete-marker,
+	cache-control: cache-control,
+	content-range: content-range,
+	content-encoding: content-encoding,
+	content-disposition: content-disposition,
+	checksum-sha256: checksum-sha256,
+	website-redirect-location: website-redirect-location,
+	body: streaming-blob,
+	checksum-crc32c: checksum-crc32c,
+	sse-customer-algorithm: sse-customer-algorithm,
+	replication-status: replication-status,
+	metadata: metadata,
+	object-lock-mode: object-lock-mode,
+	checksum-type: checksum-type,
+	object-lock-legal-hold-status: object-lock-legal-hold-status,
+	checksum-crc64nvme: checksum-crc64nvme,
+	content-type: content-type,
+	content-length: content-length,
+	missing-meta: missing-meta,
+	version-id: object-version-id,
+	object-lock-retain-until-date: object-lock-retain-until-date,
+}
+record get-bucket-logging-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+}
+record put-bucket-lifecycle-configuration-request {
+	expected-bucket-owner: account-id,
+	lifecycle-configuration: bucket-lifecycle-configuration,
+	transition-default-minimum-object-size: transition-default-minimum-object-size,
+	bucket: bucket-name,
+	checksum-algorithm: checksum-algorithm,
+}
+type start = s64; 
+type buckets = list<bucket>; 
+type missing-meta = s32; 
+record progress {
+	bytes-returned: bytes-returned,
+	bytes-scanned: bytes-scanned,
+	bytes-processed: bytes-processed,
+}
+type access-key-id-value = string; 
+type analytics-id = string; 
+record request-progress {
+	enabled: enable-request-progress,
+}
+type bytes-processed = s64; 
+record default-retention {
+	years: years,
+	mode: object-lock-retention-mode,
+	days: days,
+}
+record get-bucket-accelerate-configuration-request {
+	expected-bucket-owner: account-id,
+	request-payer: request-payer,
+	bucket: bucket-name,
+}
+type bucket-location-name = string; 
+type if-match-initiated-time = string; 
+record abort-multipart-upload-output {
+	request-charged: request-charged,
+}
+record put-object-retention-output {
+	request-charged: request-charged,
+}
+type parts = list<part>; 
+record delete-bucket-replication-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+}
+record metadata-table-configuration-result {
+	s3tables-destination-result: s3tables-destination-result,
+}
+record copy-object-request {
+	bucket: bucket-name,
+	metadata-directive: metadata-directive,
+	acl: object-canned-acl,
+	copy-source-if-match: copy-source-if-match,
+	tagging: tagging-header,
+	expected-bucket-owner: account-id,
+	sse-customer-key-md5: sse-customer-key-md5,
+	grant-read-acp: grant-read-acp,
+	metadata: metadata,
+	storage-class: storage-class,
+	website-redirect-location: website-redirect-location,
+	object-lock-mode: object-lock-mode,
+	copy-source: copy-source,
+	checksum-algorithm: checksum-algorithm,
+	copy-source-if-none-match: copy-source-if-none-match,
+	expires: expires,
+	grant-full-control: grant-full-control,
+	object-lock-retain-until-date: object-lock-retain-until-date,
+	sse-customer-algorithm: sse-customer-algorithm,
+	key: object-key,
+	grant-read: grant-read,
+	expected-source-bucket-owner: account-id,
+	ssekms-key-id: ssekms-key-id,
+	content-encoding: content-encoding,
+	copy-source-sse-customer-key-md5: copy-source-sse-customer-key-md5,
+	content-language: content-language,
+	server-side-encryption: server-side-encryption,
+	sse-customer-key: sse-customer-key,
+	ssekms-encryption-context: ssekms-encryption-context,
+	request-payer: request-payer,
+	copy-source-sse-customer-key: copy-source-sse-customer-key,
+	object-lock-legal-hold-status: object-lock-legal-hold-status,
+	grant-write-acp: grant-write-acp,
+	bucket-key-enabled: bucket-key-enabled,
+	content-type: content-type,
+	copy-source-if-modified-since: copy-source-if-modified-since,
+	cache-control: cache-control,
+	content-disposition: content-disposition,
+	copy-source-if-unmodified-since: copy-source-if-unmodified-since,
+	tagging-directive: tagging-directive,
+	copy-source-sse-customer-algorithm: copy-source-sse-customer-algorithm,
+}
+type http-redirect-code = string; 
+enum compression-type {
+	none,
+	bzip2,
+	gzip,
+}
+type ssekms-key-id = string; 
+type grant-write = string; 
+type s3tables-namespace = string; 
+enum transition-default-minimum-object-size {
+	varies-by-storage-class,
+	all-storage-classes128k,
+}
+type analytics-configuration-list = list<analytics-configuration>; 
+type access-point-alias = bool; 
+record put-bucket-cors-request {
+	checksum-algorithm: checksum-algorithm,
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+	cors-configuration: cors-configuration,
+	content-md5: content-md5,
+}
+type website-redirect-location = string; 
+record notification-configuration-filter {
+	key: s3key-filter,
+}
+record upload-part-copy-output {
+	bucket-key-enabled: bucket-key-enabled,
+	server-side-encryption: server-side-encryption,
+	sse-customer-algorithm: sse-customer-algorithm,
+	copy-part-result: copy-part-result,
+	copy-source-version-id: copy-source-version-id,
+	request-charged: request-charged,
+	sse-customer-key-md5: sse-customer-key-md5,
+	ssekms-key-id: ssekms-key-id,
+}
+record get-bucket-cors-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+record put-bucket-acl-request {
+	bucket: bucket-name,
+	access-control-policy: access-control-policy,
+	grant-read: grant-read,
+	expected-bucket-owner: account-id,
+	acl: bucket-canned-acl,
+	grant-write-acp: grant-write-acp,
+	grant-full-control: grant-full-control,
+	grant-read-acp: grant-read-acp,
+	grant-write: grant-write,
+	checksum-algorithm: checksum-algorithm,
+	content-md5: content-md5,
+}
+record put-bucket-replication-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+	replication-configuration: replication-configuration,
+	token: object-lock-token,
+	content-md5: content-md5,
+	checksum-algorithm: checksum-algorithm,
+}
+type metrics-id = string; 
+enum existing-object-replication-status {
+	disabled,
+	enabled,
+}
+type skip-validation = bool; 
+enum request-payer {
+	requester,
+}
+type object-key = string; 
+type target-bucket = string; 
+record get-object-attributes-request {
+	part-number-marker: part-number-marker,
+	object-attributes: object-attributes-list,
+	sse-customer-key: sse-customer-key,
+	sse-customer-algorithm: sse-customer-algorithm,
+	key: object-key,
+	bucket: bucket-name,
+	max-parts: max-parts,
+	sse-customer-key-md5: sse-customer-key-md5,
+	request-payer: request-payer,
+	expected-bucket-owner: account-id,
+	version-id: object-version-id,
+}
+record get-bucket-replication-output {
+	replication-configuration: replication-configuration,
+}
+record upload-part-request {
+	part-number: part-number,
+	sse-customer-key: sse-customer-key,
+	content-length: content-length,
+	checksum-algorithm: checksum-algorithm,
+	expected-bucket-owner: account-id,
+	body: streaming-blob,
+	request-payer: request-payer,
+	bucket: bucket-name,
+	upload-id: multipart-upload-id,
+	key: object-key,
+	checksum-sha1: checksum-sha1,
+	content-md5: content-md5,
+	sse-customer-algorithm: sse-customer-algorithm,
+	checksum-crc32: checksum-crc32,
+	sse-customer-key-md5: sse-customer-key-md5,
+	checksum-crc64nvme: checksum-crc64nvme,
+	checksum-crc32c: checksum-crc32c,
+	checksum-sha256: checksum-sha256,
+}
+record list-objects-output {
+	common-prefixes: common-prefix-list,
+	max-keys: max-keys,
+	encoding-type: encoding-type,
+	is-truncated: is-truncated,
+	next-marker: next-marker,
+	request-charged: request-charged,
+	delimiter: delimiter,
+	contents: object-list,
+	name: bucket-name,
+	marker: marker,
+	prefix: prefix,
+}
+type suffix = string; 
+record tagging {
+	tag-set: tag-set,
+}
+record put-object-lock-configuration-request {
+	content-md5: content-md5,
+	request-payer: request-payer,
+	checksum-algorithm: checksum-algorithm,
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+	token: object-lock-token,
+	object-lock-configuration: object-lock-configuration,
+}
+type checksum-crc32c = string; 
+enum delete-marker-replication-status {
+	disabled,
+	enabled,
+}
+type max-uploads = s32; 
+record copy-part-result {
+	checksum-crc32c: checksum-crc32c,
+	checksum-crc32: checksum-crc32,
+	last-modified: last-modified,
+	checksum-crc64nvme: checksum-crc64nvme,
+	checksum-sha1: checksum-sha1,
+	checksum-sha256: checksum-sha256,
+	e-tag: e-tag,
+}
+type content-encoding = string; 
+type next-marker = string; 
+record replication-rule-and-operator {
+	tags: tag-set,
+	prefix: prefix,
+}
+type user-metadata = list<metadata-entry>; 
+type is-enabled = bool; 
+record routing-rule {
+	redirect: redirect,
+	condition: condition,
+}
+type grant-write-acp = string; 
+record server-side-encryption-configuration {
+	rules: server-side-encryption-rules,
+}
+type enable-request-progress = bool; 
+type if-unmodified-since = string; 
+type get-object-response-status-code = s32; 
+type sse-customer-key = string; 
+record upload-part-output {
+	ssekms-key-id: ssekms-key-id,
+	checksum-crc64nvme: checksum-crc64nvme,
+	sse-customer-algorithm: sse-customer-algorithm,
+	checksum-crc32: checksum-crc32,
+	checksum-sha1: checksum-sha1,
+	server-side-encryption: server-side-encryption,
+	e-tag: e-tag,
+	request-charged: request-charged,
+	bucket-key-enabled: bucket-key-enabled,
+	checksum-sha256: checksum-sha256,
+	checksum-crc32c: checksum-crc32c,
+	sse-customer-key-md5: sse-customer-key-md5,
+}
+record lifecycle-expiration {
+	expired-object-delete-marker: expired-object-delete-marker,
+	date: date,
+	days: days,
+}
+record redirect {
+	protocol: protocol,
+	http-redirect-code: http-redirect-code,
+	replace-key-prefix-with: replace-key-prefix-with,
+	replace-key-with: replace-key-with,
+	host-name: host-name,
+}
+record create-bucket-request {
+	create-bucket-configuration: create-bucket-configuration,
+	acl: bucket-canned-acl,
+	grant-read: grant-read,
+	bucket: bucket-name,
+	grant-full-control: grant-full-control,
+	grant-read-acp: grant-read-acp,
+	grant-write-acp: grant-write-acp,
+	object-lock-enabled-for-bucket: object-lock-enabled-for-bucket,
+	object-ownership: object-ownership,
+	grant-write: grant-write,
+}
+record select-parameters {
+	input-serialization: input-serialization,
+	expression-type: expression-type,
+	expression: expression,
+	output-serialization: output-serialization,
+}
+type response-content-encoding = string; 
+record list-buckets-request {
+	max-buckets: max-buckets,
+	bucket-region: bucket-region,
+	continuation-token: token,
+	prefix: prefix,
+}
+type expression = string; 
+type parts-count = s32; 
+record grantee {
+	%type: %type,
+	id: id,
+	uri: uri,
+	email-address: email-address,
+	display-name: display-name,
+}
+record server-side-encryption-by-default {
+	kms-master-key-id: ssekms-key-id,
+	sse-algorithm: server-side-encryption,
+}
+record list-object-versions-request {
+	version-id-marker: version-id-marker,
+	encoding-type: encoding-type,
+	bucket: bucket-name,
+	max-keys: max-keys,
+	delimiter: delimiter,
+	key-marker: key-marker,
+	prefix: prefix,
+	expected-bucket-owner: account-id,
+	optional-object-attributes: optional-object-attributes-list,
+	request-payer: request-payer,
+}
+enum session-mode {
+	readwrite,
+	readonly,
+}
+type intelligent-tiering-configuration-list = list<intelligent-tiering-configuration>; 
+record delete-bucket-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+}
+record put-bucket-versioning-request {
+	content-md5: content-md5,
+	checksum-algorithm: checksum-algorithm,
+	bucket: bucket-name,
+	versioning-configuration: versioning-configuration,
+	expected-bucket-owner: account-id,
+	mfa: mfa,
+}
+record put-bucket-metrics-configuration-request {
+	id: metrics-id,
+	bucket: bucket-name,
+	metrics-configuration: metrics-configuration,
+	expected-bucket-owner: account-id,
+}
+enum inventory-frequency {
+	weekly,
+	daily,
+}
+record noncurrent-version-expiration {
+	noncurrent-days: days,
+	newer-noncurrent-versions: version-count,
+}
+record get-bucket-intelligent-tiering-configuration-request {
+	id: intelligent-tiering-id,
+	bucket: bucket-name,
+}
+record bucket-info {
+	%type: bucket-type,
+	data-redundancy: data-redundancy,
+}
+record put-object-output {
+	bucket-key-enabled: bucket-key-enabled,
+	server-side-encryption: server-side-encryption,
+	ssekms-key-id: ssekms-key-id,
+	checksum-crc32c: checksum-crc32c,
+	checksum-sha1: checksum-sha1,
+	size: size,
+	e-tag: e-tag,
+	checksum-crc32: checksum-crc32,
+	ssekms-encryption-context: ssekms-encryption-context,
+	checksum-sha256: checksum-sha256,
+	version-id: object-version-id,
+	sse-customer-algorithm: sse-customer-algorithm,
+	sse-customer-key-md5: sse-customer-key-md5,
+	request-charged: request-charged,
+	expiration: expiration,
+	checksum-crc64nvme: checksum-crc64nvme,
+	checksum-type: checksum-type,
+}
+enum storage-class-analysis-schema-version {
+	v1,
+}
+record put-object-tagging-output {
+	version-id: object-version-id,
+}
+record object-identifier {
+	key: object-key,
+	version-id: object-version-id,
+	e-tag: e-tag,
+	last-modified-time: last-modified-time,
+	size: size,
+}
+record cors-rule {
+	allowed-headers: allowed-headers,
+	allowed-methods: allowed-methods,
+	expose-headers: expose-headers,
+	max-age-seconds: max-age-seconds,
+	id: id,
+	allowed-origins: allowed-origins,
+}
+type is-truncated = bool; 
+type uri = string; 
+record metrics {
+	event-threshold: replication-time-value,
+	status: metrics-status,
+}
+enum intelligent-tiering-status {
+	enabled,
+	disabled,
+}
+type checksum-algorithm-list = list<checksum-algorithm>; 
+type minutes = s32; 
+record complete-multipart-upload-output {
+	version-id: object-version-id,
+	request-charged: request-charged,
+	checksum-sha1: checksum-sha1,
+	location: location,
+	key: object-key,
+	ssekms-key-id: ssekms-key-id,
+	e-tag: e-tag,
+	checksum-crc32c: checksum-crc32c,
+	bucket: bucket-name,
+	server-side-encryption: server-side-encryption,
+	checksum-sha256: checksum-sha256,
+	bucket-key-enabled: bucket-key-enabled,
+	checksum-crc64nvme: checksum-crc64nvme,
+	checksum-crc32: checksum-crc32,
+	checksum-type: checksum-type,
+	expiration: expiration,
+}
+enum object-ownership {
+	bucketownerpreferred,
+	bucketownerenforced,
+	objectwriter,
+}
+enum expression-type {
+	sql,
+}
+record get-object-lock-configuration-output {
+	object-lock-configuration: object-lock-configuration,
+}
+record get-bucket-request-payment-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+record versioning-configuration {
+	status: bucket-versioning-status,
+	mfa-delete: mfa-delete,
+}
+type object-lock-token = string; 
+record ssekms {
+	key-id: ssekms-key-id,
+}
+type copy-source-if-match = string; 
+type write-offset-bytes = s64; 
+type object-size-greater-than-bytes = s64; 
+record list-bucket-analytics-configurations-request {
+	continuation-token: token,
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+record policy-status {
+	is-public: is-public,
+}
+enum checksum-mode {
+	enabled,
+}
+record object-lock-legal-hold {
+	status: object-lock-legal-hold-status,
+}
+type if-match-last-modified-time = string; 
+record get-public-access-block-output {
+	public-access-block-configuration: public-access-block-configuration,
+}
+record completed-part {
+	checksum-crc32c: checksum-crc32c,
+	checksum-sha1: checksum-sha1,
+	e-tag: e-tag,
+	checksum-sha256: checksum-sha256,
+	part-number: part-number,
+	checksum-crc64nvme: checksum-crc64nvme,
+	checksum-crc32: checksum-crc32,
+}
+type date = string; 
+record put-object-retention-request {
+	bucket: bucket-name,
+	version-id: object-version-id,
+	retention: object-lock-retention,
+	expected-bucket-owner: account-id,
+	request-payer: request-payer,
+	bypass-governance-retention: bypass-governance-retention,
+	content-md5: content-md5,
+	checksum-algorithm: checksum-algorithm,
+	key: object-key,
+}
+type server-side-encryption-rules = list<server-side-encryption-rule>; 
+type object-lock-enabled-for-bucket = bool; 
+type days-after-initiation = s32; 
+record put-bucket-encryption-request {
+	bucket: bucket-name,
+	server-side-encryption-configuration: server-side-encryption-configuration,
+	expected-bucket-owner: account-id,
+	checksum-algorithm: checksum-algorithm,
+	content-md5: content-md5,
+}
+record multipart-upload {
+	initiator: initiator,
+	checksum-algorithm: checksum-algorithm,
+	owner: owner,
+	storage-class: storage-class,
+	checksum-type: checksum-type,
+	upload-id: multipart-upload-id,
+	initiated: initiated,
+	key: object-key,
+}
+type bytes-scanned = s64; 
+type queue-configuration-list = list<queue-configuration>; 
+type expired-object-delete-marker = bool; 
+type value = string; 
+type errors = list<error>; 
+record get-bucket-request-payment-output {
+	payer: payer,
+}
+record replication-time-value {
+	minutes: minutes,
+}
+enum object-canned-acl {
+	bucket-owner-read,
+	public-read-write,
+	bucket-owner-full-control,
+	aws-exec-read,
+	private,
+	authenticated-read,
+	public-read,
+}
+type copy-source-sse-customer-algorithm = string; 
+type copy-source-sse-customer-key = string; 
+record progress-event {
+	details: progress,
+}
+type response-content-type = string; 
+record delete-marker-entry {
+	key: object-key,
+	owner: owner,
+	last-modified: last-modified,
+	version-id: object-version-id,
+	is-latest: is-latest,
+}
+record delete {
+	quiet: quiet,
+	objects: object-identifier-list,
+}
+type replica-kms-key-id = string; 
+record get-bucket-encryption-output {
+	server-side-encryption-configuration: server-side-encryption-configuration,
+}
+record get-object-retention-request {
+	request-payer: request-payer,
+	expected-bucket-owner: account-id,
+	key: object-key,
+	bucket: bucket-name,
+	version-id: object-version-id,
+}
+type quiet = bool; 
+enum analytics-s3export-file-format {
+	csv,
+}
+record parquet-input {
+}
+record delete-bucket-analytics-configuration-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+	id: analytics-id,
+}
+type inventory-id = string; 
+record replica-modifications {
+	status: replica-modifications-status,
+}
+record ownership-controls {
+	rules: ownership-controls-rules,
+}
+enum file-header-info {
+	%use,
+	none,
+	ignore,
+}
+record get-object-torrent-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+	request-payer: request-payer,
+	key: object-key,
+}
+type content-language = string; 
+record list-bucket-metrics-configurations-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+	continuation-token: token,
+}
+record get-bucket-location-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+record object-version {
+	e-tag: e-tag,
+	size: size,
+	checksum-type: checksum-type,
+	storage-class: object-version-storage-class,
+	version-id: object-version-id,
+	is-latest: is-latest,
+	owner: owner,
+	restore-status: restore-status,
+	checksum-algorithm: checksum-algorithm-list,
+	last-modified: last-modified,
+	key: object-key,
+}
+record inventory-s3bucket-destination {
+	format: inventory-format,
+	account-id: account-id,
+	prefix: prefix,
+	bucket: bucket-name,
+	encryption: inventory-encryption,
+}
+type metrics-configuration-list = list<metrics-configuration>; 
+record delete-bucket-intelligent-tiering-configuration-request {
+	id: intelligent-tiering-id,
+	bucket: bucket-name,
+}
+type token = string; 
+type key-count = s32; 
+record output-serialization {
+	csv: csv-output,
+	json: json-output,
+}
+type content-length = s64; 
+type target-grants = list<target-grant>; 
+type location-name-as-string = string; 
+type grant-full-control = string; 
+record put-bucket-logging-request {
+	bucket-logging-status: bucket-logging-status,
+	checksum-algorithm: checksum-algorithm,
+	expected-bucket-owner: account-id,
+	content-md5: content-md5,
+	bucket: bucket-name,
+}
+type abort-date = string; 
+record get-bucket-acl-output {
+	grants: grants,
+	owner: owner,
+}
+type expose-headers = list<expose-header>; 
+type version-id-marker = string; 
+record accelerate-configuration {
+	status: bucket-accelerate-status,
+}
+record inventory-filter {
+	prefix: prefix,
+}
+enum request-charged {
+	requester,
+}
+type bucket-name = string; 
+enum permission {
+	write-acp,
+	read,
+	read-acp,
+	full-control,
+	write,
+}
+record get-object-attributes-output {
+	object-size: object-size,
+	checksum: checksum,
+	last-modified: last-modified,
+	delete-marker: delete-marker,
+	storage-class: storage-class,
+	version-id: object-version-id,
+	object-parts: get-object-attributes-parts,
+	request-charged: request-charged,
+	e-tag: e-tag,
+}
+enum object-lock-legal-hold-status {
+	off,
+	on,
+}
+record get-bucket-intelligent-tiering-configuration-output {
+	intelligent-tiering-configuration: intelligent-tiering-configuration,
+}
+record list-parts-request {
+	part-number-marker: part-number-marker,
+	bucket: bucket-name,
+	upload-id: multipart-upload-id,
+	key: object-key,
+	sse-customer-algorithm: sse-customer-algorithm,
+	sse-customer-key: sse-customer-key,
+	request-payer: request-payer,
+	max-parts: max-parts,
+	sse-customer-key-md5: sse-customer-key-md5,
+	expected-bucket-owner: account-id,
+}
+type id = string; 
+type version-count = s32; 
+type response-expires = string; 
+record get-object-attributes-parts {
+	part-number-marker: part-number-marker,
+	next-part-number-marker: next-part-number-marker,
+	total-parts-count: parts-count,
+	is-truncated: is-truncated,
+	parts: parts-list,
+	max-parts: max-parts,
+}
+record put-bucket-analytics-configuration-request {
+	id: analytics-id,
+	expected-bucket-owner: account-id,
+	analytics-configuration: analytics-configuration,
+	bucket: bucket-name,
+}
+record lifecycle-rule-filter {
+	object-size-less-than: object-size-less-than-bytes,
+	tag: tag,
+	object-size-greater-than: object-size-greater-than-bytes,
+	prefix: prefix,
+	and: lifecycle-rule-and-operator,
+}
+record bucket-logging-status {
+	logging-enabled: logging-enabled,
+}
+type bypass-governance-retention = bool; 
+record records-event {
+	payload: body,
+}
+type object-attributes-list = list<object-attributes>; 
+record delete-bucket-metadata-table-configuration-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+enum inventory-format {
+	parquet,
+	orc,
+	csv,
+}
+type ownership-controls-rules = list<ownership-controls-rule>; 
+type upload-id-marker = string; 
+type s3tables-bucket-arn = string; 
+type metadata = list<(metadata-key, metadata-value)>; 
+enum object-lock-retention-mode {
+	governance,
+	compliance,
+}
+record part {
+	size: size,
+	checksum-crc32: checksum-crc32,
+	checksum-sha1: checksum-sha1,
+	checksum-sha256: checksum-sha256,
+	last-modified: last-modified,
+	checksum-crc64nvme: checksum-crc64nvme,
+	e-tag: e-tag,
+	checksum-crc32c: checksum-crc32c,
+	part-number: part-number,
+}
+enum bucket-logs-permission {
+	read,
+	write,
+	full-control,
+}
+type fetch-owner = bool; 
+record put-object-acl-output {
+	request-charged: request-charged,
+}
+type mfa = string; 
+record bucket {
+	name: bucket-name,
+	bucket-region: bucket-region,
+	creation-date: creation-date,
+}
+record grant {
+	grantee: grantee,
+	permission: permission,
+}
+record delete-object-tagging-output {
+	version-id: object-version-id,
+}
+record metrics-configuration {
+	id: metrics-id,
+	filter: metrics-filter,
+}
+record list-bucket-inventory-configurations-output {
+	inventory-configuration-list: inventory-configuration-list,
+	next-continuation-token: next-token,
+	continuation-token: token,
+	is-truncated: is-truncated,
+}
+record sses3 {
+}
+enum object-lock-mode {
+	compliance,
+	governance,
+}
+record list-buckets-output {
+	owner: owner,
+	buckets: buckets,
+	prefix: prefix,
+	continuation-token: next-token,
+}
+record simple-prefix {
+}
+record list-objects-v2output {
+	name: bucket-name,
+	delimiter: delimiter,
+	prefix: prefix,
+	is-truncated: is-truncated,
+	key-count: key-count,
+	contents: object-list,
+	common-prefixes: common-prefix-list,
+	max-keys: max-keys,
+	encoding-type: encoding-type,
+	continuation-token: token,
+	next-continuation-token: next-token,
+	start-after: start-after,
+	request-charged: request-charged,
+}
+type message = string; 
+record restore-status {
+	restore-expiry-date: restore-expiry-date,
+	is-restore-in-progress: is-restore-in-progress,
+}
+type lambda-function-configuration-list = list<lambda-function-configuration>; 
+type max-keys = s32; 
+record list-object-versions-output {
+	next-key-marker: next-key-marker,
+	delete-markers: delete-markers,
+	is-truncated: is-truncated,
+	encoding-type: encoding-type,
+	common-prefixes: common-prefix-list,
+	request-charged: request-charged,
+	next-version-id-marker: next-version-id-marker,
+	versions: object-version-list,
+	max-keys: max-keys,
+	name: bucket-name,
+	key-marker: key-marker,
+	version-id-marker: version-id-marker,
+	delimiter: delimiter,
+	prefix: prefix,
+}
+type delete-marker-version-id = string; 
+enum json-type {
+	lines,
+	document,
+}
+type bytes-returned = s64; 
+type routing-rules = list<routing-rule>; 
+type max-parts = s32; 
+record error-details {
+	error-message: error-message,
+	error-code: error-code,
+}
+record head-object-request {
+	response-cache-control: response-cache-control,
+	if-unmodified-since: if-unmodified-since,
+	response-content-type: response-content-type,
+	response-expires: response-expires,
+	sse-customer-key: sse-customer-key,
+	range: range,
+	sse-customer-key-md5: sse-customer-key-md5,
+	response-content-language: response-content-language,
+	if-match: if-match,
+	if-modified-since: if-modified-since,
+	response-content-encoding: response-content-encoding,
+	if-none-match: if-none-match,
+	version-id: object-version-id,
+	part-number: part-number,
+	bucket: bucket-name,
+	response-content-disposition: response-content-disposition,
+	sse-customer-algorithm: sse-customer-algorithm,
+	key: object-key,
+	request-payer: request-payer,
+	expected-bucket-owner: account-id,
+	checksum-mode: checksum-mode,
+}
+record get-bucket-location-output {
+	location-constraint: bucket-location-constraint,
+}
+enum checksum-type {
+	full-object,
+	composite,
+}
+type checksum-crc32 = string; 
+record restore-request {
+	description: description,
+	select-parameters: select-parameters,
+	days: days,
+	glacier-job-parameters: glacier-job-parameters,
+	tier: tier,
+	output-location: output-location,
+	%type: restore-request-type,
+}
+record tag {
+	key: object-key,
+	value: value,
+}
+record complete-multipart-upload-request {
+	if-match: if-match,
+	checksum-sha256: checksum-sha256,
+	checksum-type: checksum-type,
+	request-payer: request-payer,
+	if-none-match: if-none-match,
+	upload-id: multipart-upload-id,
+	sse-customer-key: sse-customer-key,
+	key: object-key,
+	multipart-upload: completed-multipart-upload,
+	sse-customer-key-md5: sse-customer-key-md5,
+	sse-customer-algorithm: sse-customer-algorithm,
+	mpu-object-size: mpu-object-size,
+	expected-bucket-owner: account-id,
+	checksum-crc32: checksum-crc32,
+	checksum-crc64nvme: checksum-crc64nvme,
+	checksum-crc32c: checksum-crc32c,
+	bucket: bucket-name,
+	checksum-sha1: checksum-sha1,
+}
+type range = string; 
+record replication-configuration {
+	role: role,
+	rules: replication-rules,
+}
+enum tier {
+	expedited,
+	standard,
+	bulk,
+}
+record list-bucket-intelligent-tiering-configurations-request {
+	continuation-token: token,
+	bucket: bucket-name,
+}
+type copy-source = string; 
+type sse-customer-algorithm = string; 
+record inventory-destination {
+	s3bucket-destination: inventory-s3bucket-destination,
+}
+type creation-date = string; 
+type request-route = string; 
+type filter-rule-value = string; 
+type mpu-object-size = string; 
+record bucket-lifecycle-configuration {
+	rules: lifecycle-rules,
+}
+record scan-range {
+	end: end,
+	start: start,
+}
+record get-bucket-policy-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+type checksum-crc64nvme = string; 
+record put-bucket-lifecycle-configuration-output {
+	transition-default-minimum-object-size: transition-default-minimum-object-size,
+}
+record put-object-request {
+	checksum-algorithm: checksum-algorithm,
+	tagging: tagging-header,
+	website-redirect-location: website-redirect-location,
+	sse-customer-key: sse-customer-key,
+	sse-customer-key-md5: sse-customer-key-md5,
+	grant-write-acp: grant-write-acp,
+	ssekms-key-id: ssekms-key-id,
+	content-length: content-length,
+	checksum-crc32: checksum-crc32,
+	metadata: metadata,
+	cache-control: cache-control,
+	content-md5: content-md5,
+	checksum-crc64nvme: checksum-crc64nvme,
+	bucket: bucket-name,
+	if-none-match: if-none-match,
+	body: streaming-blob,
+	content-disposition: content-disposition,
+	expected-bucket-owner: account-id,
+	grant-read: grant-read,
+	checksum-sha1: checksum-sha1,
+	server-side-encryption: server-side-encryption,
+	request-payer: request-payer,
+	sse-customer-algorithm: sse-customer-algorithm,
+	if-match: if-match,
+	content-language: content-language,
+	content-encoding: content-encoding,
+	checksum-sha256: checksum-sha256,
+	ssekms-encryption-context: ssekms-encryption-context,
+	checksum-crc32c: checksum-crc32c,
+	grant-read-acp: grant-read-acp,
+	key: object-key,
+	object-lock-mode: object-lock-mode,
+	object-lock-retain-until-date: object-lock-retain-until-date,
+	content-type: content-type,
+	write-offset-bytes: write-offset-bytes,
+	acl: object-canned-acl,
+	bucket-key-enabled: bucket-key-enabled,
+	object-lock-legal-hold-status: object-lock-legal-hold-status,
+	grant-full-control: grant-full-control,
+	expires: expires,
+	storage-class: storage-class,
+}
+record get-bucket-accelerate-configuration-output {
+	request-charged: request-charged,
+	status: bucket-accelerate-status,
+}
+record analytics-and-operator {
+	prefix: prefix,
+	tags: tag-set,
+}
+record intelligent-tiering-configuration {
+	id: intelligent-tiering-id,
+	filter: intelligent-tiering-filter,
+	status: intelligent-tiering-status,
+	tierings: tiering-list,
+}
+type copy-source-sse-customer-key-md5 = string; 
+type allowed-origins = list<allowed-origin>; 
+record analytics-s3bucket-destination {
+	bucket: bucket-name,
+	prefix: prefix,
+	bucket-account-id: account-id,
+	format: analytics-s3export-file-format,
+}
+record get-bucket-metadata-table-configuration-output {
+	get-bucket-metadata-table-configuration-result: get-bucket-metadata-table-configuration-result,
+}
+type grants = list<grant>; 
+record list-directory-buckets-request {
+	max-directory-buckets: max-directory-buckets,
+	continuation-token: directory-bucket-token,
+}
+type copy-source-if-unmodified-since = string; 
+record get-bucket-inventory-configuration-output {
+	inventory-configuration: inventory-configuration,
+}
+type copy-source-if-none-match = string; 
+record notification-configuration {
+	event-bridge-configuration: event-bridge-configuration,
+	topic-configurations: topic-configuration-list,
+	lambda-function-configurations: lambda-function-configuration-list,
+	queue-configurations: queue-configuration-list,
+}
+type s3tables-arn = string; 
+record access-control-translation {
+	owner: owner-override,
+}
+record get-bucket-metadata-table-configuration-result {
+	metadata-table-configuration-result: metadata-table-configuration-result,
+	status: metadata-table-status,
+	error: error-details,
+}
+type lifecycle-rules = list<lifecycle-rule>; 
+record owner {
+	display-name: display-name,
+	id: id,
+}
+type copy-source-version-id = string; 
+type delimiter = string; 
+variant analytics-filter {
+	prefix(prefix),
+	and(analytics-and-operator),
+	tag(tag),
+}
+type if-none-match = string; 
+record get-bucket-metadata-table-configuration-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+}
+record put-bucket-accelerate-configuration-request {
+	accelerate-configuration: accelerate-configuration,
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+	checksum-algorithm: checksum-algorithm,
+}
+record upload-part-copy-request {
+	copy-source-if-unmodified-since: copy-source-if-unmodified-since,
+	copy-source: copy-source,
+	sse-customer-algorithm: sse-customer-algorithm,
+	copy-source-sse-customer-algorithm: copy-source-sse-customer-algorithm,
+	copy-source-range: copy-source-range,
+	key: object-key,
+	part-number: part-number,
+	copy-source-sse-customer-key: copy-source-sse-customer-key,
+	sse-customer-key-md5: sse-customer-key-md5,
+	upload-id: multipart-upload-id,
+	expected-bucket-owner: account-id,
+	copy-source-sse-customer-key-md5: copy-source-sse-customer-key-md5,
+	request-payer: request-payer,
+	copy-source-if-match: copy-source-if-match,
+	bucket: bucket-name,
+	copy-source-if-modified-since: copy-source-if-modified-since,
+	copy-source-if-none-match: copy-source-if-none-match,
+	sse-customer-key: sse-customer-key,
+	expected-source-bucket-owner: account-id,
+}
+enum metrics-status {
+	enabled,
+	disabled,
+}
+type deleted-objects = list<deleted-object>; 
+record delete-bucket-tagging-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+}
+record get-object-lock-configuration-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+record metadata-table-configuration {
+	s3tables-destination: s3tables-destination,
+}
+record error-document {
+	key: object-key,
+}
+record metrics-and-operator {
+	tags: tag-set,
+	access-point-arn: access-point-arn,
+	prefix: prefix,
+}
+record stats-event {
+	details: stats,
+}
+type error-code = string; 
+record create-bucket-metadata-table-configuration-request {
+	bucket: bucket-name,
+	checksum-algorithm: checksum-algorithm,
+	expected-bucket-owner: account-id,
+	metadata-table-configuration: metadata-table-configuration,
+	content-md5: content-md5,
+}
+record list-multipart-uploads-request {
+	delimiter: delimiter,
+	key-marker: key-marker,
+	max-uploads: max-uploads,
+	prefix: prefix,
+	bucket: bucket-name,
+	encoding-type: encoding-type,
+	request-payer: request-payer,
+	expected-bucket-owner: account-id,
+	upload-id-marker: upload-id-marker,
+}
+type content-disposition = string; 
+record topic-configuration {
+	filter: notification-configuration-filter,
+	events: event-list,
+	id: notification-id,
+	topic-arn: topic-arn,
+}
+enum bucket-versioning-status {
+	suspended,
+	enabled,
+}
+record queue-configuration {
+	filter: notification-configuration-filter,
+	id: notification-id,
+	queue-arn: queue-arn,
+	events: event-list,
+}
+type years = s32; 
+record metadata-entry {
+	value: metadata-value,
+	name: metadata-key,
+}
+type display-name = string; 
+record inventory-configuration {
+	filter: inventory-filter,
+	is-enabled: is-enabled,
+	included-object-versions: inventory-included-object-versions,
+	id: inventory-id,
+	destination: inventory-destination,
+	optional-fields: inventory-optional-fields,
+	schedule: inventory-schedule,
+}
+record put-bucket-ownership-controls-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+	ownership-controls: ownership-controls,
+	content-md5: content-md5,
+}
+record create-multipart-upload-request {
+	tagging: tagging-header,
+	content-encoding: content-encoding,
+	grant-read: grant-read,
+	server-side-encryption: server-side-encryption,
+	storage-class: storage-class,
+	sse-customer-algorithm: sse-customer-algorithm,
+	ssekms-key-id: ssekms-key-id,
+	expected-bucket-owner: account-id,
+	sse-customer-key-md5: sse-customer-key-md5,
+	checksum-type: checksum-type,
+	acl: object-canned-acl,
+	content-language: content-language,
+	grant-read-acp: grant-read-acp,
+	key: object-key,
+	object-lock-mode: object-lock-mode,
+	bucket: bucket-name,
+	object-lock-retain-until-date: object-lock-retain-until-date,
+	ssekms-encryption-context: ssekms-encryption-context,
+	grant-write-acp: grant-write-acp,
+	sse-customer-key: sse-customer-key,
+	bucket-key-enabled: bucket-key-enabled,
+	object-lock-legal-hold-status: object-lock-legal-hold-status,
+	content-type: content-type,
+	grant-full-control: grant-full-control,
+	metadata: metadata,
+	checksum-algorithm: checksum-algorithm,
+	cache-control: cache-control,
+	request-payer: request-payer,
+	website-redirect-location: website-redirect-location,
+	expires: expires,
+	content-disposition: content-disposition,
+}
+type last-modified-time = string; 
+record noncurrent-version-transition {
+	storage-class: transition-storage-class,
+	newer-noncurrent-versions: version-count,
+	noncurrent-days: days,
+}
+type next-key-marker = string; 
+record delete-bucket-policy-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+type sse-customer-key-md5 = string; 
+type content-md5 = string; 
+record destination {
+	bucket: bucket-name,
+	account: account-id,
+	storage-class: storage-class,
+	metrics: metrics,
+	access-control-translation: access-control-translation,
+	encryption-configuration: encryption-configuration,
+	replication-time: replication-time,
+}
+record get-bucket-ownership-controls-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+type expose-header = string; 
+type start-after = string; 
+record delete-bucket-ownership-controls-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+}
+record copy-object-result {
+	e-tag: e-tag,
+	checksum-crc64nvme: checksum-crc64nvme,
+	checksum-sha1: checksum-sha1,
+	checksum-type: checksum-type,
+	checksum-crc32: checksum-crc32,
+	checksum-sha256: checksum-sha256,
+	checksum-crc32c: checksum-crc32c,
+	last-modified: last-modified,
+}
+record delete-bucket-cors-request {
+	bucket: bucket-name,
+	expected-bucket-owner: account-id,
+}
+type bucket-region = string; 
+type replace-key-with = string; 
+type kms-context = string; 
+type code = string; 
+type part-number = s32; 
+enum bucket-type {
+	directory,
+}
+record abort-incomplete-multipart-upload {
+	days-after-initiation: days-after-initiation,
+}
+type last-modified = string; 
+record get-bucket-policy-status-request {
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+enum metadata-directive {
+	copy,
+	replace,
+}
+record delete-objects-request {
+	bucket: bucket-name,
+	delete: delete,
+	mfa: mfa,
+	checksum-algorithm: checksum-algorithm,
+	expected-bucket-owner: account-id,
+	bypass-governance-retention: bypass-governance-retention,
+	request-payer: request-payer,
+}
+enum object-storage-class {
+	snow,
+	standard-ia,
+	standard,
+	glacier,
+	onezone-ia,
+	express-onezone,
+	reduced-redundancy,
+	glacier-ir,
+	deep-archive,
+	outposts,
+	intelligent-tiering,
+}
+type quote-escape-character = string; 
+enum server-side-encryption {
+	aes256,
+	aws-kms,
+	aws-kms-dsse,
+}
+type restore = string; 
+record get-object-acl-request {
+	version-id: object-version-id,
+	key: object-key,
+	bucket: bucket-name,
+	request-payer: request-payer,
+	expected-bucket-owner: account-id,
+}
+type response-content-language = string; 
+type tagging-header = string; 
+enum filter-rule-name {
+	suffix,
+	prefix,
+}
+record delete-object-request {
+	if-match: if-match,
+	if-match-last-modified-time: if-match-last-modified-time,
+	bucket: bucket-name,
+	request-payer: request-payer,
+	if-match-size: if-match-size,
+	mfa: mfa,
+	version-id: object-version-id,
+	bypass-governance-retention: bypass-governance-retention,
+	key: object-key,
+	expected-bucket-owner: account-id,
+}
+enum mfa-delete {
+	enabled,
+	disabled,
+}
+type cors-rules = list<cors-rule>; 
+record put-object-tagging-request {
+	tagging: tagging,
+	request-payer: request-payer,
+	checksum-algorithm: checksum-algorithm,
+	content-md5: content-md5,
+	key: object-key,
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+	version-id: object-version-id,
+}
+record partitioned-prefix {
+	partition-date-source: partition-date-source,
+}
+record get-object-torrent-output {
+	body: streaming-blob,
+	request-charged: request-charged,
+}
+record logging-enabled {
+	target-object-key-format: target-object-key-format,
+	target-bucket: target-bucket,
+	target-prefix: target-prefix,
+	target-grants: target-grants,
+}
+enum %type {
+	canonicaluser,
+	group,
+	amazoncustomerbyemail,
+}
+enum checksum-algorithm {
+	crc32,
+	crc32c,
+	sha256,
+	crc64nvme,
+	sha1,
+}
+type optional-object-attributes-list = list<optional-object-attributes>; 
+type confirm-remove-self-bucket-access = bool; 
+type marker = string; 
+record analytics-configuration {
+	id: analytics-id,
+	storage-class-analysis: storage-class-analysis,
+	filter: analytics-filter,
+}
+enum inventory-included-object-versions {
+	current,
+	all,
+}
+record condition {
+	key-prefix-equals: key-prefix-equals,
+	http-error-code-returned-equals: http-error-code-returned-equals,
+}
+record get-object-acl-output {
+	request-charged: request-charged,
+	owner: owner,
+	grants: grants,
+}
+record json-output {
+	record-delimiter: record-delimiter,
+}
+record get-object-tagging-request {
+	request-payer: request-payer,
+	version-id: object-version-id,
+	key: object-key,
+	expected-bucket-owner: account-id,
+	bucket: bucket-name,
+}
+
+// Operations
+resource client {
+	get-bucket-inventory-configuration: func(input: get-bucket-inventory-configuration-request) -> get-bucket-inventory-configuration-output;
+	get-bucket-lifecycle-configuration: func(input: get-bucket-lifecycle-configuration-request) -> get-bucket-lifecycle-configuration-output;
+	list-multipart-uploads: func(input: list-multipart-uploads-request) -> list-multipart-uploads-output;
+	list-object-versions: func(input: list-object-versions-request) -> list-object-versions-output;
+	put-bucket-encryption: func(input: put-bucket-encryption-request);
+	put-object-acl: func(input: put-object-acl-request) -> put-object-acl-output;
+	put-object-legal-hold: func(input: put-object-legal-hold-request) -> put-object-legal-hold-output;
+	upload-part: func(input: upload-part-request) -> upload-part-output;
+	create-multipart-upload: func(input: create-multipart-upload-request) -> create-multipart-upload-output;
+	list-bucket-metrics-configurations: func(input: list-bucket-metrics-configurations-request) -> list-bucket-metrics-configurations-output;
+	write-get-object-response: func(input: write-get-object-response-request);
+	create-bucket: func(input: create-bucket-request) -> create-bucket-output;
+	get-object-retention: func(input: get-object-retention-request) -> get-object-retention-output;
+	put-bucket-analytics-configuration: func(input: put-bucket-analytics-configuration-request);
+	put-bucket-versioning: func(input: put-bucket-versioning-request);
+	head-bucket: func(input: head-bucket-request) -> head-bucket-output;
+	get-bucket-analytics-configuration: func(input: get-bucket-analytics-configuration-request) -> get-bucket-analytics-configuration-output;
+	get-object-acl: func(input: get-object-acl-request) -> get-object-acl-output;
+	get-bucket-notification-configuration: func(input: get-bucket-notification-configuration-request) -> notification-configuration;
+	get-bucket-policy: func(input: get-bucket-policy-request) -> get-bucket-policy-output;
+	delete-bucket-cors: func(input: delete-bucket-cors-request);
+	put-bucket-replication: func(input: put-bucket-replication-request);
+	get-bucket-versioning: func(input: get-bucket-versioning-request) -> get-bucket-versioning-output;
+	delete-public-access-block: func(input: delete-public-access-block-request);
+	delete-bucket-intelligent-tiering-configuration: func(input: delete-bucket-intelligent-tiering-configuration-request);
+	delete-bucket-lifecycle: func(input: delete-bucket-lifecycle-request);
+	get-bucket-metadata-table-configuration: func(input: get-bucket-metadata-table-configuration-request) -> get-bucket-metadata-table-configuration-output;
+	list-bucket-analytics-configurations: func(input: list-bucket-analytics-configurations-request) -> list-bucket-analytics-configurations-output;
+	delete-bucket-replication: func(input: delete-bucket-replication-request);
+	delete-bucket: func(input: delete-bucket-request);
+	delete-bucket-encryption: func(input: delete-bucket-encryption-request);
+	delete-bucket-inventory-configuration: func(input: delete-bucket-inventory-configuration-request);
+	delete-bucket-metrics-configuration: func(input: delete-bucket-metrics-configuration-request);
+	get-bucket-metrics-configuration: func(input: get-bucket-metrics-configuration-request) -> get-bucket-metrics-configuration-output;
+	get-bucket-replication: func(input: get-bucket-replication-request) -> get-bucket-replication-output;
+	get-object-attributes: func(input: get-object-attributes-request) -> get-object-attributes-output;
+	list-directory-buckets: func(input: list-directory-buckets-request) -> list-directory-buckets-output;
+	get-bucket-ownership-controls: func(input: get-bucket-ownership-controls-request) -> get-bucket-ownership-controls-output;
+	create-session: func(input: create-session-request) -> create-session-output;
+	put-bucket-inventory-configuration: func(input: put-bucket-inventory-configuration-request);
+	put-bucket-logging: func(input: put-bucket-logging-request);
+	put-bucket-request-payment: func(input: put-bucket-request-payment-request);
+	put-bucket-tagging: func(input: put-bucket-tagging-request);
+	abort-multipart-upload: func(input: abort-multipart-upload-request) -> abort-multipart-upload-output;
+	restore-object: func(input: restore-object-request) -> restore-object-output;
+	get-object-lock-configuration: func(input: get-object-lock-configuration-request) -> get-object-lock-configuration-output;
+	get-object-tagging: func(input: get-object-tagging-request) -> get-object-tagging-output;
+	put-bucket-cors: func(input: put-bucket-cors-request);
+	put-object: func(input: put-object-request) -> put-object-output;
+	put-object-retention: func(input: put-object-retention-request) -> put-object-retention-output;
+	delete-bucket-website: func(input: delete-bucket-website-request);
+	get-bucket-location: func(input: get-bucket-location-request) -> get-bucket-location-output;
+	delete-bucket-policy: func(input: delete-bucket-policy-request);
+	put-bucket-accelerate-configuration: func(input: put-bucket-accelerate-configuration-request);
+	copy-object: func(input: copy-object-request) -> copy-object-output;
+	put-bucket-website: func(input: put-bucket-website-request);
+	put-public-access-block: func(input: put-public-access-block-request);
+	select-object-content: func(input: select-object-content-request) -> select-object-content-output;
+	upload-part-copy: func(input: upload-part-copy-request) -> upload-part-copy-output;
+	put-bucket-metrics-configuration: func(input: put-bucket-metrics-configuration-request);
+	get-bucket-policy-status: func(input: get-bucket-policy-status-request) -> get-bucket-policy-status-output;
+	delete-objects: func(input: delete-objects-request) -> delete-objects-output;
+	list-objects: func(input: list-objects-request) -> list-objects-output;
+	complete-multipart-upload: func(input: complete-multipart-upload-request) -> complete-multipart-upload-output;
+	get-public-access-block: func(input: get-public-access-block-request) -> get-public-access-block-output;
+	put-bucket-policy: func(input: put-bucket-policy-request);
+	put-bucket-lifecycle-configuration: func(input: put-bucket-lifecycle-configuration-request) -> put-bucket-lifecycle-configuration-output;
+	delete-bucket-tagging: func(input: delete-bucket-tagging-request);
+	delete-object-tagging: func(input: delete-object-tagging-request) -> delete-object-tagging-output;
+	get-bucket-logging: func(input: get-bucket-logging-request) -> get-bucket-logging-output;
+	get-object: func(input: get-object-request) -> get-object-output;
+	delete-bucket-ownership-controls: func(input: delete-bucket-ownership-controls-request);
+	list-parts: func(input: list-parts-request) -> list-parts-output;
+	list-buckets: func(input: list-buckets-request) -> list-buckets-output;
+	list-objects-v2: func(input: list-objects-v2request) -> list-objects-v2output;
+	put-bucket-ownership-controls: func(input: put-bucket-ownership-controls-request);
+	put-object-tagging: func(input: put-object-tagging-request) -> put-object-tagging-output;
+	get-bucket-website: func(input: get-bucket-website-request) -> get-bucket-website-output;
+	head-object: func(input: head-object-request) -> head-object-output;
+	list-bucket-inventory-configurations: func(input: list-bucket-inventory-configurations-request) -> list-bucket-inventory-configurations-output;
+	put-bucket-intelligent-tiering-configuration: func(input: put-bucket-intelligent-tiering-configuration-request);
+	get-bucket-tagging: func(input: get-bucket-tagging-request) -> get-bucket-tagging-output;
+	delete-object: func(input: delete-object-request) -> delete-object-output;
+	get-bucket-cors: func(input: get-bucket-cors-request) -> get-bucket-cors-output;
+	get-bucket-request-payment: func(input: get-bucket-request-payment-request) -> get-bucket-request-payment-output;
+	list-bucket-intelligent-tiering-configurations: func(input: list-bucket-intelligent-tiering-configurations-request) -> list-bucket-intelligent-tiering-configurations-output;
+	put-bucket-notification-configuration: func(input: put-bucket-notification-configuration-request);
+	put-bucket-acl: func(input: put-bucket-acl-request);
+	get-bucket-encryption: func(input: get-bucket-encryption-request) -> get-bucket-encryption-output;
+	put-object-lock-configuration: func(input: put-object-lock-configuration-request) -> put-object-lock-configuration-output;
+	delete-bucket-analytics-configuration: func(input: delete-bucket-analytics-configuration-request);
+	delete-bucket-metadata-table-configuration: func(input: delete-bucket-metadata-table-configuration-request);
+	get-bucket-accelerate-configuration: func(input: get-bucket-accelerate-configuration-request) -> get-bucket-accelerate-configuration-output;
+	get-bucket-intelligent-tiering-configuration: func(input: get-bucket-intelligent-tiering-configuration-request) -> get-bucket-intelligent-tiering-configuration-output;
+	get-object-legal-hold: func(input: get-object-legal-hold-request) -> get-object-legal-hold-output;
+	get-bucket-acl: func(input: get-bucket-acl-request) -> get-bucket-acl-output;
+	get-object-torrent: func(input: get-object-torrent-request) -> get-object-torrent-output;
+	create-bucket-metadata-table-configuration: func(input: create-bucket-metadata-table-configuration-request);
+}
+}
+world s3 {
+	export amazon-s3;
+}
